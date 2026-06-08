@@ -9,16 +9,7 @@ When you invoke `/code-canvas`, it:
 1. Builds your interface as a Next.js component or page
 2. Starts the local dev server
 3. Captures the live UI into Figma via Code to Canvas
-4. Structures the Figma file automatically:
-   - Detects and applies the design system library
-   - Replaces raw colors and fonts with design tokens
-   - Applies auto-layout to every frame (children set to Fill/Hug)
-   - Creates components for all repeated patterns and one-off interactive elements
-   - Runs a mandatory variant audit on every component against a 10-category trigger checklist (interactive states, loading/async, validation, empty/skeleton, size, style/type, status, content slots, selection/toggle, expansion)
-   - Places all component masters with full variant sets on a "Components" page
-   - Renames every layer to a unique, semantic name
-   - Sets correct breakpoint widths (mobile or desktop) based on context
-   - Audits and fixes accessibility (AA required, AAA where feasible)
+4. Structures the Figma file to production-quality standards automatically — tokens, components, layout, and accessibility included
 5. Runs a standards audit loop until the design scores 100% before handoff
 6. Hands off the Figma file URL for you to continue in the browser
 
