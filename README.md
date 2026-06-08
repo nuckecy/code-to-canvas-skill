@@ -1,6 +1,6 @@
 # Code to Canvas Skill
 
-A Claude Code skill that orchestrates a full design-to-Figma workflow in one command.
+A Claude Code skill that orchestrates a full design-to-Figma workflow: builds a Next.js interface, captures the live UI via Code to Canvas, then performs structured Figma post-processing to production-quality standards.
 
 ## What it does
 
@@ -16,7 +16,9 @@ When you invoke `/code-canvas`, it:
    - Creates components with context-aware variants on a "Components" page
    - Renames every layer to a unique, semantic name
    - Sets correct breakpoint widths (mobile or desktop) based on context
-5. Hands off the Figma file URL for you to continue in the browser
+   - Audits and fixes accessibility (AA required, AAA where feasible)
+5. Runs a standards audit loop until the design scores 100% before handoff
+6. Hands off the Figma file URL for you to continue in the browser
 
 ## Install
 
@@ -33,6 +35,14 @@ npx skills add nuckecy/code-to-canvas-skill@code-canvas
 Or just say **"build me a [thing]"** and Claude will offer to invoke it automatically.
 
 If no URL is provided, the skill will ask for one. It will also ask any clarifying questions (platform, Figma file) before starting.
+
+## Standards enforced
+
+- Auto-layout on every frame (Fill/Hug children)
+- Components with context-aware variants on a dedicated "Components" page
+- Unique, semantic layer names (zero generic names)
+- All values reference design tokens (no hardcoded colours or typography)
+- Accessibility: AA required, AAA where feasible; non-text UI 3:1+; no colour-only meaning; body text 14px+
 
 ## Requirements
 
@@ -53,3 +63,11 @@ The skill chains three Claude Code capabilities:
 ```
 ~/.claude/skills/code-canvas/SKILL.md
 ```
+
+## Author
+
+**Otobong Okoko** - otobongsok@gmail.com
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
