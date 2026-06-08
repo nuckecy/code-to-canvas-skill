@@ -88,11 +88,36 @@ Perform all of the following inside Figma after the design lands. Use the `use_f
 
 #### 4d. Componentize Reusable Patterns
 
-- Identify any UI pattern that appears more than once or represents a discrete, reusable element (buttons, cards, input fields, badges, navigation items, etc.).
+- Identify any UI pattern that appears more than once OR represents a discrete, reusable element (buttons, cards, input fields, badges, navigation items, etc.) OR is a one-off element that clearly has interactive or conditional states (e.g. a single submit button still has hover, focus, disabled).
 - Create a Figma component for each identified pattern.
-- **Variants**: If the task or design context implies multiple states (e.g. a button implies default, hover, disabled; a card implies default and selected), create a component set with those variants. Only include variants that are contextually justified — do not fabricate states.
 - Token-bind all fills and text styles within components. No hardcoded values inside components.
 - Place all components on a dedicated page named **"Components"**.
+
+#### 4d-ii. Variant Audit (mandatory pass after 4d)
+
+After all components are created, run a dedicated variant audit on every component — including one-off elements. For each component, check every applicable trigger below and create a component set with the matching variants. Do not skip a trigger because a variant is not visible in the captured design: if the trigger applies to the element type, the variant must be created.
+
+**Variant trigger checklist (apply to every component):**
+
+| Trigger category | Variants to create | Applies to |
+|---|---|---|
+| Interactive states | Default, Hover, Focus, Active, Disabled | Any interactive element (buttons, links, inputs, toggles, tabs, checkboxes, radio buttons, selects, chips) |
+| Loading/async states | Default, Loading, Success, Error | Elements that trigger or reflect async operations (buttons, forms, cards that fetch data) |
+| Validation states | Default, Error, Success, Warning | Inputs, form fields, and any element that can display validation feedback |
+| Visibility/content states | Populated, Empty, Skeleton | Cards, lists, tables, feeds, or any container that can have empty or loading content |
+| Size variants | SM, MD, LG (or equivalent scale) | Buttons, inputs, avatars, badges, icons — any element used at multiple sizes anywhere in the UI |
+| Style/type variants | Primary, Secondary, Ghost, Destructive (or domain-appropriate equivalents) | Buttons, alerts, banners, tags — any element with a semantic hierarchy of visual weight |
+| Status variants | Info, Warning, Error, Success | Alerts, banners, toasts, badges, status indicators |
+| Content slot variants | With Icon, Without Icon; With Label, Without Label; With Badge, Without Badge | Buttons, nav items, avatars, list items — any element where content slots are optional |
+| Selection/toggle states | Unselected, Selected, Indeterminate | Checkboxes, radio buttons, toggles, tabs, filter chips |
+| Expansion states | Collapsed, Expanded | Accordions, dropdowns, tooltips, drawers, tree nodes |
+
+**Rules for the variant audit:**
+- Check every trigger row against every component. A component may satisfy multiple trigger categories and should have variants for all that apply.
+- Only skip a trigger if it genuinely cannot apply to the element type (e.g. "Expansion states" does not apply to a static badge).
+- If a variant state requires a different layout or content (e.g. a Loading button shows a spinner instead of label text), adjust the frame contents accordingly — do not just change the fill color.
+- After creating variants, verify every variant has token-bound fills and text styles. No hardcoded values in any variant frame.
+- Update component master names to use slash notation that reflects the variant property (e.g. `button/primary`, with variant properties `State=Default/Hover/Focus/Active/Disabled` and `Size=SM/MD/LG`).
 
 #### 4e. Semantic Layer Naming
 
@@ -129,7 +154,7 @@ After all post-processing steps (4a through 4g) complete, run a full audit again
 | # | Criterion | Pass condition |
 |---|-----------|----------------|
 | 1 | Auto-layout | Every frame uses auto-layout; all children are Fill or Hug (never fixed or absolute, except flagged production mirrors) |
-| 2 | Components and variants | All repeated/stateful elements are components with context-accurate variants, masters on the "Components" page, zero instances of raw repeated elements |
+| 2 | Components and variants | All repeated/stateful elements and one-off interactive elements are components; every component has passed the variant trigger checklist (4d-ii) with all applicable variant categories created; masters on the "Components" page; zero raw repeated elements |
 | 3 | Semantic layer names | Zero generic names (Frame N, Rectangle N, Group N, Container, Div); every layer name is unique and describes what it is |
 | 4 | Token coverage | Zero hardcoded hex colours, font sizes, weights, or families; all values reference library tokens/variables |
 | 5 | Accessibility | All text contrast AA+, body/critical text targeting AAA, non-text UI 3:1+, no colour-only meaning, body text 14px+ with adequate spacing |
@@ -153,7 +178,7 @@ After all post-processing steps (4a through 4g) complete, run a full audit again
 - Always load `figma-use` before any `use_figma` call.
 - Always load `figma-generate-design` before any `generate_figma_design` call.
 - Steps 1-2 (Next.js build and dev server) run first, then Step 3 (capture), then Steps 4a-4g (post-processing) run in sequence inside Figma, then Step 5 (audit loop), then Step 6 (handoff).
-- Never skip post-processing steps. All seven sub-steps (4a through 4g) must complete before the first audit.
+- Never skip post-processing steps. All sub-steps (4a through 4g, including 4d-ii) must complete before the first audit.
 - Never hand off until the audit score is 100%.
 - If the user only provides a URL (no build needed), skip Steps 1-2 and start from Step 3.
 - If the Figma file already has the design landed and the user wants to re-run post-processing only, skip Steps 1-3 and run Steps 4a-4g then the audit loop.

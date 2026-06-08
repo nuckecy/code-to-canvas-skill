@@ -13,7 +13,9 @@ When you invoke `/code-canvas`, it:
    - Detects and applies the design system library
    - Replaces raw colors and fonts with design tokens
    - Applies auto-layout to every frame (children set to Fill/Hug)
-   - Creates components with context-aware variants on a "Components" page
+   - Creates components for all repeated patterns and one-off interactive elements
+   - Runs a mandatory variant audit on every component against a 10-category trigger checklist (interactive states, loading/async, validation, empty/skeleton, size, style/type, status, content slots, selection/toggle, expansion)
+   - Places all component masters with full variant sets on a "Components" page
    - Renames every layer to a unique, semantic name
    - Sets correct breakpoint widths (mobile or desktop) based on context
    - Audits and fixes accessibility (AA required, AAA where feasible)
@@ -39,7 +41,7 @@ If no URL is provided, the skill will ask for one. It will also ask any clarifyi
 ## Standards enforced
 
 - Auto-layout on every frame (Fill/Hug children)
-- Components with context-aware variants on a dedicated "Components" page
+- Components with exhaustive variants on a dedicated "Components" page: every component is checked against a 10-category variant trigger checklist (interactive states, loading/async, validation, empty/skeleton, size, style/type, status, content slots, selection/toggle, expansion) and all applicable variants are created
 - Unique, semantic layer names (zero generic names)
 - All values reference design tokens (no hardcoded colours or typography)
 - Accessibility: AA required, AAA where feasible; non-text UI 3:1+; no colour-only meaning; body text 14px+
